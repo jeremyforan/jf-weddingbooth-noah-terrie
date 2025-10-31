@@ -30,7 +30,7 @@
 #v(10pt)
 
 
-#place(dy: -1.05in, dx: -.25in)[
+#place(dy: -1.05in, dx: -.275in)[
   #rotate(-.85rad)[
     #image("leaf.png")
   ]
