@@ -1,0 +1,59 @@
+# This workflow file should be placed in .github/workflows/update_timestamp.yml
+
+name: Update Manifest Timestamp
+
+# This action is configured to run on every push to the 'main' branch.
+on:
+  push:
+    branches:
+      - main
+
+# A concurrency group ensures that only one workflow run is in progress for this branch at any time.
+# If a new commit is pushed, the previous run will be canceled.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update-json-timestamp:
+    runs-on: ubuntu-latest
+    # Add write permissions for the contents of the repository
+    permissions:
+      contents: write
+    # This condition is crucial to prevent an infinite loop. The action works by making a new commit.
+    # This `if` statement checks if the commit message already contains '[skip ci]', which we add below.
+    # If it does, the workflow will not run again for the commit it just made.
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    steps:
+      # Step 1: Check out the repository code
+      # This action allows the workflow to access your repository's files.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Update the Unix epoch timestamp in the manifest.json file
+      - name: Update timestamp in manifest.json
+        run: |
+          # Get the current time as a Unix epoch timestamp (e.g., 1728448080)
+          TIMESTAMP=$(date +%s)
+          echo "Current epoch timestamp: $TIMESTAMP"
+
+          # Use the command-line JSON processor 'jq' to update the 'ts' field.
+          # The '--argjson' flag is used to ensure the timestamp is treated as a number, not a string.
+          jq --argjson ts "$TIMESTAMP" '.ts = $ts' manifest.json > tmp.json && mv tmp.json manifest.json
+          echo "Successfully updated ts field in manifest.json"
+
+      # Step 3: Commit the updated file back to the repository
+      # This action automates checking for changes and committing them.
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # The commit message for the update. Includes '[skip ci]' to prevent workflow loops.
+          commit_message: "CI: Update manifest timestamp [skip ci]"
+          
+          # The specific file that should be committed if changed.
+          file_pattern: manifest.json
+          
+          # Optional: Define the author of the automated commit.
+          commit_user_name: GitHub Actions Bot
+          commit_user_email: actions@github.com
