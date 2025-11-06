@@ -1,11 +1,11 @@
 #import "template.typ": *
 
-
 #show: project.with(
   title: "jf-photobooth-template",
   authors: (
     "Jeremy Foran",
   ),
+
   background: image("background.png", scaling: "smooth", height: 100%),
 )
 
