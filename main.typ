@@ -6,7 +6,7 @@
     "Jeremy Foran",
   ),
   // fill: gradient.linear(white, rgb("#9CCC65")),
-  background: image("light.png", scaling: "smooth", height: 100%),
+  background: image("dark.png", scaling: "smooth", height: 100%),
 )
 
 #set text(
