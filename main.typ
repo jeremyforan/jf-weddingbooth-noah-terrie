@@ -5,8 +5,8 @@
   authors: (
     "Jeremy Foran",
   ),
-
-  background: image("background.png", scaling: "smooth", height: 100%),
+  // fill: gradient.linear(white, rgb("#9CCC65")),
+  background: image("light.png", scaling: "smooth", height: 100%),
 )
 
 #set text(
@@ -20,7 +20,7 @@
 #v(15pt)
 
 #align(center)[
-  #text(rgb("#58565A"), size: 12pt, font: "Ibarra Real Nova")[
+  #text(rgb("#58565A"), size: 12pt, weight: "light", font: "Ibarra Real Nova")[
     Terrie & Noah
 
     08.11.25
@@ -35,6 +35,11 @@
   ]
 ]
 
+
+
 // Font - Ibarra Real Nova
 // Font colour - #58565A
 // Green - #305652
+
+
+// 9CCC65

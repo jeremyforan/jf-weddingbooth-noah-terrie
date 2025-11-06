@@ -9,17 +9,43 @@
 
 #let bleed = if bleedInput == "true" { true } else { false }
 
-#let project(title: "", authors: (), background: image("assets/props/6x2.png"), body) = {
-  // Set the document's basic properties.
+#let project(
+  title: "",
+  authors: (),
+  bgColor: none,
+  background: none,
+  body,
+) = {
   set document(author: authors, title: title)
+
+  // Convert bleedInput string to bool
+  let bleed = if bleedInput == "true" { true } else { false }
+  let bleedBox = if bleed {
+    box(stroke: (paint: blue, thickness: .5pt, dash: "dashed"), width: 1.8in, height: 5.8in)
+  } else {}
+
+  // Determine the fill based on what's provided
+  let fillValue = if background != none {
+    // background image provided
+    tiling(size: (2in, 6in))[#background]
+  } else if bgColor != none {
+    // solid color provided
+    rgb(bgColor)
+  } else {
+    // default to white
+    white
+  }
+
+  // Apply the page setup
   set page(
-    fill: tiling(size: (2in, 6in))[#background],
+    fill: fillValue,
     height: 6in,
     width: pageWidth,
     margin: 0in,
     foreground: bleedBox,
   )
 
+  // Layout logic
   if pageWidth == 4in [
     #columns(2, gutter: 0pt)[
       #set par(spacing: 0pt, leading: 0pt)
@@ -37,7 +63,7 @@
   ]
 }
 
-#let photo(img, corner: .5mm, imgWidth: 100%) = {
+#let photo(img, corner: 1.5mm, imgWidth: 100%) = {
   box(
     image(img, width: imgWidth, fit: "contain", scaling: "smooth"),
     clip: true,
@@ -47,8 +73,8 @@
 
 #let imageBlock(
   alignment: center,
-  rad: 3mm,
   padding: 2mm,
+  rad: 1mm,
   images: (
     rotate(0deg)[#photo(img1)],
     rotate(0deg)[#photo(img2)],
