@@ -13,7 +13,7 @@
   top-edge: "ascender",
 )
 
-#v(10pt)
+#v(6pt)
 
 #box(inset: 4mm)[#imageBlock(padding: 2mm, rad: 1mm)]
 
@@ -21,18 +21,17 @@
 
 #align(center)[
   #text(rgb("#58565A"), size: 12pt, font: "Ibarra Real Nova")[
-    Noah & Terrie
+    Terrie & Noah
 
-    2025.11.08
+    08.11.25
   ]
 ]
 
 #v(10pt)
 
-
-#place(dy: -1.05in, dx: -.275in)[
+#place(dy: -.65in, dx: .06in)[
   #rotate(-.85rad)[
-    #image("leaf.png")
+    #image("leaf.png", width: 38%)
   ]
 ]
 
